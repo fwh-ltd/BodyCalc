@@ -1,4 +1,5 @@
 import getopt
+import json
 import sys
 import math
 import os
@@ -38,15 +39,18 @@ def run(opt=None):
     body_shape = get_body_shape(bust, waist, hip)
     body_type = get_body_type(bmi, body_shape)
     butt_desc = get_butt_desc(hip)
-    breast_multiplier = get_breast_multiplier(bust, cup)
-    breast_desc = get_breast_desc(breast_multiplier)
+    tits_multiplier = get_breast_multiplier(bust, cup)
+    tits_desc = get_breast_desc(tits_multiplier)
 
-    print("bmi:",bmi)
-    print("body shape:",body_shape)
-    print("body type:",body_type)
-    print("butt desc:",butt_desc)
-    print("breast desc:",breast_desc)
-    print("breast mult:",breast_multiplier)
+    results = dict()
+    results['bmi'] = bmi
+    results['body_shape'] = body_shape
+    results['body_description'] = body_type
+    results['butt_description'] = butt_desc
+    results['tits_description'] = tits_desc
+    results['tits_multiplier'] = tits_multiplier
+
+    print(json.dumps(results))
 
 def get_bmi(weight, height):
     if not (weight and height):

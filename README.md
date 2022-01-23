@@ -23,11 +23,6 @@ All measurements must be entered to get complete results. However, you can calcu
 
 ```
 # python3 BodyCalc.py -b 36 -w 24 -C 170 -K 52 -c DD
-bmi: 17
-body shape: apple
-body type: skinny
-butt desc: small
-breast desc: large
-breast mult: 4
+{"bmi": 17, "body_shape": "apple", "body_description": "skinny", "butt_description": "small", "tits_description": "large", "tits_multiplier": 4}
 ```
 
