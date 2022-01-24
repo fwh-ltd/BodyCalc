@@ -1,5 +1,10 @@
 # BodyCalc
 
+## Install
+```
+python3 -m pip install --user -e .
+```
+
 ## Description
 ---
 
@@ -12,7 +17,7 @@ All measurements must be entered to get complete results. However, you can calcu
 
 ## How to use
 ```
-#python3 BodyCalc.py
+#python3 main.py
 -W [--weight] : weight in kilograms
 -C [--height] : height in centimeters
 -b [--bust]   : bust in inches
@@ -22,7 +27,7 @@ All measurements must be entered to get complete results. However, you can calcu
 ```
 
 ```
-# python3 BodyCalc.py -b 36 -w 24 -C 170 -K 52 -c DD
-{"bmi": 17, "body_shape": "apple", "body_description": "skinny", "butt_description": "small", "tits_description": "large", "tits_multiplier": 4}
+# python3 main.py -b 36 -w 24 -C 170 -K 52 -c DD
+{"bmi": 17, "bmi_type": "A", "body_shape": "apple", "body_type": "skinny", "butt_type": "small", "bust_scale": "large", "tits_scale": 4, "tits_type": "large"}
 ```
 
