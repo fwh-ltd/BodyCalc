@@ -185,42 +185,42 @@ def get_bmi_type(bmi):
     if bmi == 0:
         return None
     if bmi in range(1, 18):
-        return 'A'
+        return 'underweight'
     elif bmi in range(18, 23):
-        return 'B'
+        return 'healthy'
     elif bmi in range(23, 29):
-        return 'C'
+        return 'overweight'
     elif bmi in range(29, 55):
-        return 'D'
+        return 'obese'
     elif bmi >= 55:
-        return 'E'
+        return 'extremely-obese'
     return None
 
 def get_body_type(bmi_type, shape):
     try:
         if shape == None:
             return None
-        elif bmi_type == 'A':
+        elif bmi_type == 'underweight':
             return 'skinny'
-        elif bmi_type == 'B':
+        elif bmi_type == 'healthy':
             return 'petite'
-        elif bmi_type == 'C' and shape != 'hourglass':
+        elif bmi_type == 'overweight' and shape != 'hourglass':
             return 'average'
-        elif bmi_type == 'C' and shape == 'hourglass':
+        elif bmi_type == 'overweight' and shape == 'hourglass':
             return 'curvy'
-        elif bmi_type == 'D' and shape == 'banana':
+        elif bmi_type == 'obese' and shape == 'banana':
             return 'BBW'
-        elif bmi_type == 'D' and shape == 'hourglass':
+        elif bmi_type == 'obese' and shape == 'hourglass':
             return 'BBW - curvy'
-        elif bmi_type == 'D' and shape == 'pear':
+        elif bmi_type == 'obese' and shape == 'pear':
             return 'BBW - bottom heavy'
-        elif bmi_type == 'D' and shape == 'apple':
+        elif bmi_type == 'obese' and shape == 'apple':
             return 'BBW - top heavy'
-        elif bmi_type == 'E' and (shape == 'banana' or shape == 'hourglass'):
+        elif bmi_type == 'extremely-obese' and (shape == 'banana' or shape == 'hourglass'):
             return 'SSBBW'
-        elif bmi_type == 'E' and shape == 'apple':
+        elif bmi_type == 'extremely-obese' and shape == 'apple':
             return 'SSBBW - top heavy'
-        elif bmi_type == 'E' and shape == 'pear':
+        elif bmi_type == 'extremely-obese' and shape == 'pear':
             return 'SSBBW - bottom heavy'
         else:
             return None
