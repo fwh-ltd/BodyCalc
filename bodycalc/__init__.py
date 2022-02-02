@@ -8,23 +8,40 @@ def get_all(height, weight, bust, cup, waist, hip):
     bmi_type = get_bmi_type(bmi)
     results['bmi_type'] = bmi_type
 
-    body_shape = get_body_shape(bust, waist, hip)
+    body_shape = None
+    if bust and waist and hip:
+        body_shape = get_body_shape(bust, waist, hip)
     results['body_shape'] = body_shape
 
-    body_type = get_body_type(bmi_type, body_shape)
+    body_type = None
+    if bmi_type and body_shape:
+        body_type = get_body_type(bmi_type, body_shape)
     results['body_type'] = body_type
 
-    butt_type = get_butt_type(hip)
+    butt_type = None
+    if hip:
+        butt_type = get_butt_type(hip)
     results['butt_type'] = butt_type
 
-    bust_scale = get_bust_scale(bust)
+    bust_scale = None
+    if bust:
+      bust_scale = get_bust_scale(bust)
     results['bust_scale'] = bust_scale
 
-    tits_scale = get_tits_scale(bust_scale, cup)
+    tits_scale = None
+    if bust_scale and cup:
+        tits_scale = get_tits_scale(bust_scale, cup)
     results['tits_scale'] = tits_scale
 
-    tits_type = get_tits_type(tits_scale)
+    tits_type = None
+    if tits_scale:
+        tits_type = get_tits_type(tits_scale)
     results['tits_type'] = tits_type
+
+    waist_hip_ratio = None
+    if waist and hip:
+        waist_hip_ratio = waist / hip
+    results['waist_hip_ratio'] = waist_hip_ratio
 
     return results
 
@@ -40,52 +57,52 @@ def get_bmi(weight, height):
 def get_bust_scale(bust):
     try:
         bust = int(bust)
-        return 'small' if bust < 34 else 'large'
+        return -1 if bust < 34 else 1
     except ValueError:
         return None
 
 def get_tits_scale(bust_scale, cup):
     if cup in [''] and bust_scale == None:
         return 99
-    elif cup in ['AA', 'A'] and bust_scale == 'small':
+    elif cup in ['AA', 'A'] and bust_scale < 0:
         return 1
-    elif cup in ['AA', 'A'] and bust_scale == 'large':
+    elif cup in ['AA', 'A'] and bust_scale > 0:
         return 2
-    elif cup in ['B', 'C'] and bust_scale == 'small':
-        return 2
-    elif cup in ['D'] and bust_scale == 'small':
+    elif cup in ['B', 'C'] and bust_scale < 0:
         return 3
-    elif cup in ['B', 'C', 'D'] and bust_scale == 'large':
-        return 3
-    elif cup in ['DD', 'DDD', 'E', 'EE', 'EEE', 'F', 'FF', 'G'] and bust_scale == 'small':
-        return 3
-    elif cup in ['DD', 'DDD', 'E', 'EE', 'EEE', 'F', 'FF', 'G'] and bust_scale == 'large':
+    elif cup in ['D'] and bust_scale < 0:
         return 4
-    elif cup in ['FFF', 'GG', 'GGG', 'H', 'HH', 'I'] and bust_scale == 'small':
+    elif cup in ['B', 'C', 'D'] and bust_scale > 0:
+        return 3
+    elif cup in ['DD', 'DDD', 'E', 'EE', 'EEE', 'F', 'FF', 'G'] and bust_scale < 0:
         return 4
-    elif cup in ['FFF', 'GG', 'GGG', 'H', 'HH', 'I'] and bust_scale == 'large':
+    elif cup in ['DD', 'DDD', 'E', 'EE', 'EEE', 'F', 'FF', 'G'] and bust_scale > 0:
+        return 3
+    elif cup in ['FFF', 'GG', 'GGG', 'H', 'HH', 'I'] and bust_scale < 0:
         return 5
-    elif cup in ['HHH', 'II', 'III', 'J', 'JJ', 'K'] and bust_scale == 'small':
-        return 5
-    elif cup in ['HHH', 'II', 'III', 'J', 'JJ', 'K'] and bust_scale == 'large':
+    elif cup in ['FFF', 'GG', 'GGG', 'H', 'HH', 'I'] and bust_scale > 0:
+        return 4
+    elif cup in ['HHH', 'II', 'III', 'J', 'JJ', 'K'] and bust_scale < 0:
         return 6
+    elif cup in ['HHH', 'II', 'III', 'J', 'JJ', 'K'] and bust_scale > 0:
+        return 5
     else:
         return 0
 
-def get_tits_type(scale):
-    if scale == 1:
+def get_tits_type(tits_scale):
+    if tits_scale == 1:
         return 'tiny'
-    elif scale == 2:
+    elif tits_scale == 2:
         return 'small'
-    elif scale == 3:
+    elif tits_scale == 3:
         return 'medium'
-    elif scale == 4:
+    elif tits_scale == 4:
         return 'large'
-    elif scale == 5:
+    elif tits_scale == 5:
         return 'huge'
-    elif scale == 6:
+    elif tits_scale == 6:
         return 'massive'
-    elif scale == 99 or scale == 0:
+    elif tits_scale == 99 or tits_scale == 0:
         return None
     else:
         return None
@@ -113,15 +130,43 @@ def get_body_shape(bust, waist, hip):
         waist = int(waist)
         hip = int(hip)
 
-        # Waist is at least 25 percent smaller than Hip AND Bust measurement.
-        if float(waist) * float(1.25) <= bust & hip:
+        # calculator.net
+        if bust - hip <= 1 and hip - bust <= 3.6 and bust - waist >= 9 or hip - waist >= 10:
+            return "hourglass"
+
+        # calculator.net
+        elif hip - bust >= 3.6 and hip - bust < 10 and hip - waist >= 9:
+            return "lower-hourglass"
+
+        # calculator.net
+        elif bust - hip > 1 and bust - hip < 10 and bust - waist >= 9:
+            return "upper-hourglass"
+
+        # ORIG Waist is at least 25 percent smaller than Hip AND Bust measurement.
+        elif float(waist) * float(1.25) <= bust and float(waist) * float(1.25) <= hip:
             return 'hourglass'
 
-        # Hip measurement is more than 5 percent bigger than Bust measurement.
+        # calculator.net
+        elif hip - bust > 2 and hip - waist >= 7:
+            return "spoon"
+
+        # calculator.net
+        elif hip - bust >= 3.6 and hip - waist < 9:
+            return "triangle"
+
+        # ORIG Hip measurement is more than 5 percent bigger than Bust measurement.
         elif float(hip) * float(1.05) > bust:
             return 'pear'
 
-        # Hip measurement is more than 5 percent smaller than Bust measurement.
+        # calculator.net
+        elif bust - hip >= 3.6 and bust - waist < 9:
+            return "inverted-triangle"
+
+        # calculator.net
+        elif hip - bust < 3.6 and bust - hip < 3.6 and bust - waist < 9 and hip - waist < 10:
+            return "rectangle"
+
+        # ORIG Hip measurement is more than 5 percent smaller than Bust measurement.
         elif float(hip) * float(1.05) < bust:
             return 'apple'
 
@@ -129,9 +174,6 @@ def get_body_shape(bust, waist, hip):
         high = max(bust, waist, hip)
         low = min(bust, waist, hip)
         difference = high - low
-
-        # Debugging purposes only!
-        #print(high, low, difference)
 
         if difference <= 5:
             return 'banana'
