@@ -39,8 +39,16 @@ def get_all(height, weight, bust, cup, waist, hip):
     results['tits_type'] = tits_type
 
     waist_hip_ratio = None
+    results['waist_hip_type'] = None
     if waist and hip:
         waist_hip_ratio = waist / hip
+        #mean 0.718 sd 0.0563
+        if waist_hip_ratio > 0.80 :
+            results['waist_hip_type'] = 'wide'
+        elif waist_hip_ratio < 0.64 :
+            results['waist_hip_type'] = 'narrow'
+        else:
+            results['waist_hip_type'] = 'normal'
     results['waist_hip_ratio'] = waist_hip_ratio
 
     return results
