@@ -65,7 +65,7 @@ def get_bmi(weight, height):
 def get_bust_scale(bust):
     try:
         bust = int(bust)
-        return -1 if bust < 34 else 1
+        return 1 if bust > 34 else -1
     except ValueError:
         return None
 
